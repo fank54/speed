@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouTube Speed Controller</title>
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white flex flex-col items-center justify-center min-h-screen p-4">
+  <h1 class="text-3xl font-bold mb-4">🎬 YouTube Speed Controller</h1>
+
+  <!-- Input -->
+  <div class="flex gap-2 mb-4">
+    <input 
+      id="videoUrl" 
+      type="text" 
+      placeholder="Paste YouTube video link..." 
+      class="p-2 rounded-lg w-64 text-black"
+    />
+    <button 
+      onclick="loadVideo()" 
+      class="bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-600"
+    >
+      Load Video
+    </button>
+  </div>
+
+  <!-- Video Player -->
+  <div class="w-full max-w-2xl aspect-video mb-4">
+    <div id="player"></div>
+  </div>
+
+  <!-- Speed Controls -->
+  <div class="flex gap-4">
+    <button onclick="setSpeed(1)" class="bg-gray-700 px-4 py-2 rounded-lg hover:bg-gray-600">1x</button>
+    <button onclick="setSpeed(2)" class="bg-gray-700 px-4 py-2 rounded-lg hover:bg-gray-600">2x</button>
+    <button onclick="setSpeed(3)" class="bg-gray-700 px-4 py-2 rounded-lg hover:bg-gray-600">3x</button>
+    <button onclick="setSpeed(4)" class="bg-gray-700 px-4 py-2 rounded-lg hover:bg-gray-600">4x</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
