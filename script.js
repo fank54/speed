@@ -1,51 +1,53 @@
 let player;
 
-// Load YouTube Iframe API
+// Initialize YouTube Player
 function onYouTubeIframeAPIReady() {
   player = new YT.Player('player', {
     height: '390',
     width: '640',
     videoId: '',
-    events: {}
+    playerVars: {
+      playsinline: 1
+    }
   });
 }
 
-// Load Video from Input
+// Load Video from URL
 function loadVideo() {
   const url = document.getElementById('videoUrl').value.trim();
   const videoId = extractVideoID(url);
+  console.log("Extracted Video ID:", videoId);
+
   if (videoId) {
     player.loadVideoById(videoId);
   } else {
-    alert("❌ Please enter a valid YouTube link!");
+    alert("❌ Invalid YouTube link! Please try again.");
   }
 }
 
-// Extract Video ID (Support Shorts, Normal Links, Share Links)
+// Function to Extract YouTube Video ID
 function extractVideoID(url) {
   try {
-    // 1. Try URL parsing
-    const parsedUrl = new URL(url);
-    const hostname = parsedUrl.hostname;
+    // Clean URL
+    url = url.replace("youtu.be/", "youtube.com/watch?v=");
+    url = url.replace("shorts/", "watch?v=");
 
-    // Case 1: Normal YouTube link with ?v=VIDEOID
-    if (parsedUrl.searchParams.get("v")) {
+    const parsedUrl = new URL(url);
+
+    // Get Video ID from search params
+    if (parsedUrl.searchParams.has("v")) {
       return parsedUrl.searchParams.get("v");
     }
 
-    // Case 2: Shorts link (youtube.com/shorts/VIDEOID)
-    if (hostname.includes("youtube.com") && parsedUrl.pathname.startsWith("/shorts/")) {
-      return parsedUrl.pathname.split("/shorts/")[1].split("?")[0];
-    }
-
-    // Case 3: youtu.be short link
-    if (hostname === "youtu.be") {
-      return parsedUrl.pathname.slice(1);
+    // If path contains video ID
+    const pathParts = parsedUrl.pathname.split('/');
+    for (const part of pathParts) {
+      if (part.length === 11) return part;
     }
 
     return null;
-  } catch (error) {
-    console.error("Invalid URL", error);
+  } catch (e) {
+    console.error("Error parsing URL:", e);
     return null;
   }
 }
